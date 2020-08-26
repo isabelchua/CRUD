@@ -5,27 +5,48 @@ import SpellInput from './SpellInput';
 
 function App() {
 	const [spells, setSpells] = React.useState([]);
+	const [newSpellName, setNewSpellName] = React.useState();
 
 	//console.log(db);
 
 	React.useEffect(() => {
 		const fetchData = async () => {
 			const db = firebase.firestore();
-			const data = await db.collection('users').get();
-			setSpells(
-				data.docs.map(doc => ({
-					...doc.data(),
-					id: doc.id
-				}))
+			//const data = await db.collection('users').get();
+
+			// setSpells(
+			// 	data.docs.map(doc => ({
+			// 		...doc.data(),
+			// 		id: doc.id
+			// 	}))
+
+			db.collection('users')
+			.onSnapshot(snapshot =>
+				setSpells(
+					snapshot.docs.map(doc => ({
+						...doc.data(),
+						id: doc.id
+					}))
+				)
 			);
 			//console.log(data.docs.map(doc => doc.data()));
 		};
 		fetchData();
 	}, []);
 
+	const onCreate = () => {
+		const db = firebase.firestore();
+		db.collection('users').add({ name: newSpellName });
+	};
+
 	return (
 		<div className="App">
 			<ul>
+				<input
+					value={newSpellName}
+					onChange={e => setNewSpellName(e.target.value)}
+				/>
+				<button onClick={onCreate}>Create</button>
 				{spells.map(spell => (
 					<li key={spell.name}>
 						<SpellInput spell={spell} />
