@@ -21,14 +21,15 @@ function App() {
 			// 	}))
 
 			db.collection('users')
-			.onSnapshot(snapshot =>
-				setSpells(
-					snapshot.docs.map(doc => ({
-						...doc.data(),
-						id: doc.id
-					}))
-				)
-			);
+				//.orderBy('timestamp', 'desc')
+				.onSnapshot(snapshot =>
+					setSpells(
+						snapshot.docs.map(doc => ({
+							id: doc.id,
+							...doc.data()
+						}))
+					)
+				);
 			//console.log(data.docs.map(doc => doc.data()));
 		};
 		fetchData();
@@ -47,6 +48,8 @@ function App() {
 					onChange={e => setNewSpellName(e.target.value)}
 				/>
 				<button onClick={onCreate}>Create</button>
+
+				{/* take note add ID */}
 				{spells.map(spell => (
 					<li key={spell.name}>
 						<SpellInput spell={spell} />

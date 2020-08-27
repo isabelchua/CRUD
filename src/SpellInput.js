@@ -20,13 +20,14 @@ export const SpellInput = ({ spell }) => {
 		<div>
 			{/* <input defaultValue={spell.name}/> */}
 			<input
+				onBlur={onUpdate}
 				value={name}
 				onChange={e => {
 					setName(e.target.value);
 				}}
 			/>
-			<button onClick={onUpdate}>Update</button>
-			<button onClick={onDelete}>Delete</button>
+			{/* <button >Update</button> */}
+			<button onClick={onDelete}>X</button>
 		</div>
 	);
 };
